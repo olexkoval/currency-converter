@@ -9,12 +9,22 @@ import Foundation
 
 struct Currency: Hashable {
     
-    private static let allCurrencyISOCodes =
+    static let supportedCurrencyISOCodes: [String] = [
+//        Please specify here the list of supported Currency ISO Codes otherwise
+//        Foundation Currency ISO Codes will be used
+    ]
+    
+    static let foundationCurrencyISOCodes =
     if #available(iOS 16, *) {
-        Set(Locale.commonISOCurrencyCodes)
+        Locale.commonISOCurrencyCodes
     } else {
-        Set(Locale.isoCurrencyCodes)
+        Locale.isoCurrencyCodes
     }
+    
+    static let allCurrencyISOCodes = supportedCurrencyISOCodes.isEmpty ?
+    foundationCurrencyISOCodes : supportedCurrencyISOCodes
+    
+    private static let allCurrencyISOCodesSet = Set(allCurrencyISOCodes)
     
     enum CurrencyError: Error {
         case invalidCurrencyISOCode
@@ -28,7 +38,7 @@ struct Currency: Hashable {
     init(currencyISOCode: String) throws {
         let uppercasedISOCode = currencyISOCode.uppercased()
         
-        guard Currency.allCurrencyISOCodes.contains(uppercasedISOCode) else {
+        guard Currency.allCurrencyISOCodesSet.contains(uppercasedISOCode) else {
             throw CurrencyError.invalidCurrencyISOCode
         }
         
