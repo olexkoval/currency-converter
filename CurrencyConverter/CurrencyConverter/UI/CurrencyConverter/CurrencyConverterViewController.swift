@@ -196,6 +196,7 @@ private extension CurrencyConverterViewController {
             case .failure(let error):
                 self?.activityIndicator.stopAnimating()
                 self?.navigationCoordinator?.showError(error)
+                self?.textField.text = "0"
             }
         }
         

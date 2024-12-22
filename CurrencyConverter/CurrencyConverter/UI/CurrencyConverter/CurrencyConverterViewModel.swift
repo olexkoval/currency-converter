@@ -134,10 +134,10 @@ extension CurrencyConverterViewModelImpl: CurrencyConverterViewModel {
     var currencyConverterPublisher: Published<CurrencyConverterViewModelData>.Publisher { $currentData }
     var loadingStatePublisher: Published<CurrencyConverterLoadingState>.Publisher { $state }
     
+    private static let allowedAmountCharactersSet = CharacterSet(charactersIn: "0123456789.,").inverted
+    
     func shouldChangeCharactersFrom(currentText: String, in range: NSRange, replacementString string: String) -> Bool {
-        let allowedCharacters = "0123456789.,"
-        let characterSet = CharacterSet(charactersIn: allowedCharacters)
-        if string.rangeOfCharacter(from: characterSet.inverted) != nil {
+        if string.rangeOfCharacter(from: Self.allowedAmountCharactersSet) != nil {
             return false
         }
 
@@ -211,6 +211,11 @@ private extension CurrencyConverterViewModelImpl {
                 switch completion {
                 case .failure(let modelError):
                     self.state = .failure(modelError)
+                    self.currentData = CurrencyConverterViewModelDataImpl(source: cd.source,
+                                                                          inputAmount: .zero,
+                                                                          target: cd.target,
+                                                                          outputAmount: .zero)
+                    
                 case .finished:
                     self.state = .finishedLoading
                     self.scheduleTimerUpdate()
