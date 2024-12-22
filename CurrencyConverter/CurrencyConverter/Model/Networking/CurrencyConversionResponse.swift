@@ -53,6 +53,6 @@ struct CurrencyConversionResponse {
             throw CurrencyConversionResponseError.invalidResponseAmountValue
         }
         self.amount = try Amount(value: amountValue)
-        self.currency = try Currency(isoCurrencyCode: networkResponse.currency)
+        self.currency = try Currency(currencyISOCode: networkResponse.currency)
     }
 }

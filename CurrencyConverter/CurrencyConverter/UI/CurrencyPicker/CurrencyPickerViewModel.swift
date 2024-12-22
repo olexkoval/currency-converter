@@ -19,7 +19,7 @@ final class CurrencyPickerViewModelImpl {
     private let allCurrencyISOCodes: [String]
     private let recentCurrencies: [String]
     
-    private static let allISOCurrencyCodes =
+    private static let allCurrencyISOCodes =
     if #available(iOS 16, *) {
         Locale.commonISOCurrencyCodes
     } else {
@@ -29,10 +29,10 @@ final class CurrencyPickerViewModelImpl {
     var filter = ""
     
     init(recentCurrenciesManager: RecentCurrenciesManager,
-         allCurrencyISOCodes: [String] = CurrencyPickerViewModelImpl.allISOCurrencyCodes)
+         allCurrencyISOCodes: [String] = CurrencyPickerViewModelImpl.allCurrencyISOCodes)
     {
         self.allCurrencyISOCodes = allCurrencyISOCodes
-        self.recentCurrencies = recentCurrenciesManager.recentCurrencies(maxCount: 10).map(\.isoCurrencyCode)
+        self.recentCurrencies = recentCurrenciesManager.recentCurrencies(maxCount: 10).map(\.currencyISOCode)
     }
 }
 

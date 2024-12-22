@@ -58,7 +58,7 @@ extension CurrencyConverterViewModelImpl: CurrencyConverterViewModel {
     
     func sourceCurrencyChanged(_ sourceCurrencyISOCode: String) {
         do {
-            let sourceCurrency = try Currency(isoCurrencyCode: sourceCurrencyISOCode)
+            let sourceCurrency = try Currency(currencyISOCode: sourceCurrencyISOCode)
             
             guard let cd = currentData as? CurrencyConverterViewModelDataImpl else {
                 assertionFailure("Failed to cast currentData to CurrencyConverterViewModelDataImpl")
@@ -81,7 +81,7 @@ extension CurrencyConverterViewModelImpl: CurrencyConverterViewModel {
     
     func targetCurrencyChanged(_ targetCurrencyISOCode: String) {
         do {
-            let targetCurrency = try Currency(isoCurrencyCode: targetCurrencyISOCode)
+            let targetCurrency = try Currency(currencyISOCode: targetCurrencyISOCode)
             
             guard let cd = currentData as? CurrencyConverterViewModelDataImpl else {
                 assertionFailure("Failed to cast currentData to CurrencyConverterViewModelDataImpl")

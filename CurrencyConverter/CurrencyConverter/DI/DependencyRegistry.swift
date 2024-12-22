@@ -47,7 +47,11 @@ private extension DependencyRegistryImpl {
         }.inObjectScope(.container)
         
         container.register(CurrencyConversionNetworkManager.self) { _ in CurrencyConversionNetworkManagerImpl() }.inObjectScope(.container)
-        container.register(RecentCurrenciesManager.self) { _ in RecentCurrenciesManagerImpl() }.inObjectScope(.container)
+        
+        container.register(CoreDataStack.self) { _ in
+            CoreDataStack() }.inObjectScope(.container)
+        
+        container.register(RecentCurrenciesManager.self) { r in RecentCurrenciesManagerImpl(stack: r.resolve(CoreDataStack.self)!) }.inObjectScope(.container)
     }
     
     func registerViewModels() {

@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Currency {
+struct Currency: Hashable {
     
-    private static let allISOCurrencyCodes = 
+    private static let allCurrencyISOCodes =
     if #available(iOS 16, *) {
         Set(Locale.commonISOCurrencyCodes)
     } else {
@@ -17,25 +17,25 @@ struct Currency {
     }
     
     enum CurrencyError: Error {
-        case invalidISOCurrencyCode
+        case invalidCurrencyISOCode
     }
     
-    static let usd: Currency = try! Currency(isoCurrencyCode: "USD")
-    static let eur: Currency = try! Currency(isoCurrencyCode: "EUR")
+    static let usd: Currency = try! Currency(currencyISOCode: "USD")
+    static let eur: Currency = try! Currency(currencyISOCode: "EUR")
     
-    let isoCurrencyCode: String
+    let currencyISOCode: String
     
-    init(isoCurrencyCode: String) throws {
-        let uppercasedISOCode = isoCurrencyCode.uppercased()
+    init(currencyISOCode: String) throws {
+        let uppercasedISOCode = currencyISOCode.uppercased()
         
-        guard Currency.allISOCurrencyCodes.contains(uppercasedISOCode) else {
-            throw CurrencyError.invalidISOCurrencyCode
+        guard Currency.allCurrencyISOCodes.contains(uppercasedISOCode) else {
+            throw CurrencyError.invalidCurrencyISOCode
         }
         
-        self.isoCurrencyCode = uppercasedISOCode
+        self.currencyISOCode = uppercasedISOCode
     }
 }
 
 extension Currency: CustomStringConvertible {
-    var description: String { isoCurrencyCode }
+    var description: String { currencyISOCode }
 }

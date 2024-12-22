@@ -138,6 +138,14 @@ extension CurrencyPickerViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if shouldShowRecents && section == 0 {
+            return "Recent currencies".uppercased()
+        }
+        
+        return "All currencies".uppercased()
+    }
 }
 
 private extension CurrencyPickerViewController {
