@@ -14,7 +14,7 @@ protocol CurrencyPickerViewControllerDelegate: AnyObject {
 
 final class CurrencyPickerViewController: UIViewController {
     private let viewModel: CurrencyPickerViewModel
-    private let selectedCurrencyISOCode: String?
+    var selectedCurrencyISOCode: String?
     weak var delegate: CurrencyPickerViewControllerDelegate?
     
     private lazy var tableView: UITableView = {
@@ -50,7 +50,7 @@ final class CurrencyPickerViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -151,7 +151,7 @@ private extension CurrencyPickerViewController {
     
     func setupConstraints() {
         let salg = view.safeAreaLayoutGuide
-
+        
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: salg.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: salg.trailingAnchor),

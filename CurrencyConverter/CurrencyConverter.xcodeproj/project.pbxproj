@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB0987A72D182B4200057359 /* DependencyRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0987A52D182B4200057359 /* DependencyRegistry.swift */; };
+		EB0987AA2D182B5900057359 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = EB0987A92D182B5900057359 /* Swinject */; };
+		EB0987AD2D182D6F00057359 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0987AC2D182D6F00057359 /* NavigationCoordinator.swift */; };
 		EB1338082D163076006789E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1338072D163076006789E5 /* AppDelegate.swift */; };
 		EB13380A2D163076006789E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1338092D163076006789E5 /* SceneDelegate.swift */; };
 		EB13380C2D163076006789E5 /* CurrencyConverterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB13380B2D163076006789E5 /* CurrencyConverterViewController.swift */; };
@@ -44,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EB0987A52D182B4200057359 /* DependencyRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyRegistry.swift; sourceTree = "<group>"; };
+		EB0987AC2D182D6F00057359 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		EB1338042D163076006789E5 /* CurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB1338072D163076006789E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB1338092D163076006789E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB0987AA2D182B5900057359 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +98,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EB0987A62D182B4200057359 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				EB0987A52D182B4200057359 /* DependencyRegistry.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		EB0987AB2D182D5900057359 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				EB0987AC2D182D6F00057359 /* NavigationCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		EB1337FB2D163076006789E5 = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +137,8 @@
 		EB1338062D163076006789E5 /* CurrencyConverter */ = {
 			isa = PBXGroup;
 			children = (
+				EB0987AB2D182D5900057359 /* Coordinator */,
+				EB0987A62D182B4200057359 /* DI */,
 				EB1338382D16D31F006789E5 /* App */,
 				EB13383A2D16D3CE006789E5 /* Model */,
 				EB1338392D16D331006789E5 /* UI */,
@@ -231,6 +255,9 @@
 			dependencies = (
 			);
 			name = CurrencyConverter;
+			packageProductDependencies = (
+				EB0987A92D182B5900057359 /* Swinject */,
+			);
 			productName = CurrencyConverter;
 			productReference = EB1338042D163076006789E5 /* CurrencyConverter.app */;
 			productType = "com.apple.product-type.application";
@@ -303,6 +330,9 @@
 				Base,
 			);
 			mainGroup = EB1337FB2D163076006789E5;
+			packageReferences = (
+				EB0987A82D182B5900057359 /* XCRemoteSwiftPackageReference "Swinject" */,
+			);
 			productRefGroup = EB1338052D163076006789E5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -351,11 +381,13 @@
 				EB1338532D172D0D006789E5 /* RecentCurrenciesManager.swift in Sources */,
 				EB13384E2D171D42006789E5 /* CurrencyPickerViewController.swift in Sources */,
 				EB1338452D16E341006789E5 /* Amount.swift in Sources */,
+				EB0987A72D182B4200057359 /* DependencyRegistry.swift in Sources */,
 				EB1338402D16D78F006789E5 /* CurrencyConversionResponse.swift in Sources */,
 				EB13384A2D17045C006789E5 /* CurrencyConverterViewModel.swift in Sources */,
 				EB1338502D171D73006789E5 /* CurrencyPickerViewModel.swift in Sources */,
 				EB1338082D163076006789E5 /* AppDelegate.swift in Sources */,
 				EB13380A2D163076006789E5 /* SceneDelegate.swift in Sources */,
+				EB0987AD2D182D6F00057359 /* NavigationCoordinator.swift in Sources */,
 				EB1338472D16FB52006789E5 /* CurrencyConversionNetworkManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -688,6 +720,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EB0987A82D182B5900057359 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EB0987A92D182B5900057359 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB0987A82D182B5900057359 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EB1337FC2D163076006789E5 /* Project object */;
 }

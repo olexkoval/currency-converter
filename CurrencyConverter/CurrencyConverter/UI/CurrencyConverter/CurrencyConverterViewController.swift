@@ -13,8 +13,8 @@ final class CurrencyConverterViewController: UIViewController {
     private let viewModel: CurrencyConverterViewModel
     private var bindings = Set<AnyCancellable>()
     private var textFieldText = ""
-    private var pickerDestinationMode = CurrencyPickerDestinationMode.none
-        
+    weak var navigationCoordinator: NavigationCoordinator?
+    
     private lazy var containerView: UIView = {
         let container = UIView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -81,16 +81,19 @@ final class CurrencyConverterViewController: UIViewController {
         return textField
     }()
     
-    init(viewModel: CurrencyConverterViewModel) {
-      self.viewModel = viewModel
-      
-      super.init(nibName: nil, bundle: nil)
+    init(viewModel: CurrencyConverterViewModel,
+         navigationCoordinator: NavigationCoordinator? = nil)
+    {
+        self.viewModel = viewModel
+        self.navigationCoordinator = navigationCoordinator
+        
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -144,27 +147,8 @@ extension CurrencyConverterViewController: UITextFieldDelegate {
     }
 }
 
-extension CurrencyConverterViewController: CurrencyPickerViewControllerDelegate {
-    func currencyPickerViewController(_ picker: CurrencyPickerViewController, didSelect currencyISOCode: String) {
-        switch pickerDestinationMode {
-        case .source:
-            viewModel.sourceCurrencyChanged(currencyISOCode)
-        case .target:
-            viewModel.targetCurrencyChanged(currencyISOCode)
-        case .none:
-            assertionFailure("incorrect behavior of Currency Picker")
-        }
-        
-        dismiss(animated: true)
-    }
-    
-    func currencyPickerViewControllerDidCancel(_ picker: CurrencyPickerViewController) {
-        dismiss(animated: true)
-    }
-}
-
 private extension CurrencyConverterViewController {
-
+    
     func setupConstraints() {
         let salg = view.safeAreaLayoutGuide
         
@@ -190,7 +174,7 @@ private extension CurrencyConverterViewController {
             sourceAmountLabel.leadingAnchor.constraint(equalTo: sourceCurrencyButton.trailingAnchor, constant: 8),
             sourceAmountLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             sourceAmountLabel.centerYAnchor.constraint(equalTo: sourceCurrencyButton.centerYAnchor),
-
+            
             textField.leadingAnchor.constraint(equalTo: sourceAmountLabel.trailingAnchor, constant: 0),
             textField.topAnchor.constraint(equalTo: sourceAmountLabel.topAnchor, constant: 0),
             textField.bottomAnchor.constraint(equalTo: sourceAmountLabel.bottomAnchor, constant: 0),
@@ -224,7 +208,7 @@ private extension CurrencyConverterViewController {
                 self?.activityIndicator.stopAnimating()
             case .error(let error):
                 self?.activityIndicator.stopAnimating()
-                self?.showError(error)
+                self?.navigationCoordinator?.showError(error)
             }
         }
         
@@ -240,46 +224,28 @@ private extension CurrencyConverterViewController {
         targetAmountLabel.text = viewModelData.targetAmount
     }
     
-    enum CurrencyPickerDestinationMode {
-        case none
-        case source
-        case target
-    }
-    
     @objc func sourceCurrencyButtonTapped() {
         textField.resignFirstResponder()
         
-        let currencyPicker = CurrencyPickerViewController(viewModel: CurrencyPickerViewModelImpl(recentCurrenciesManager: RecentCurrenciesManagerImpl()),
-                                                          delegate: self)
-        
-        self.pickerDestinationMode = .source
-        
-        present(currencyPicker, animated: true)
-
+        self.navigationCoordinator?.presentCurrencyPicker(for: nil, completion: { [weak self] currencyISOCode in
+            if let currencyISOCode {
+                self?.viewModel.sourceCurrencyChanged(currencyISOCode)
+            }
+        })
     }
     
     @objc func targetCurrencyButtonTapped() {
         textField.resignFirstResponder()
         
-        let currencyPicker = CurrencyPickerViewController(viewModel: CurrencyPickerViewModelImpl(recentCurrenciesManager: RecentCurrenciesManagerImpl()),
-                                                          delegate: self)
-        
-        self.pickerDestinationMode = .target
-        
-        present(currencyPicker, animated: true)
+        self.navigationCoordinator?.presentCurrencyPicker(for: nil, completion: { [weak self] currencyISOCode in
+            if let currencyISOCode {
+                self?.viewModel.targetCurrencyChanged(currencyISOCode)
+            }
+        })
     }
     
     @objc func sourceAmountLabelTapped() {
         textField.becomeFirstResponder()
-    }
-    
-    func showError(_ error: Error) {
-      let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-      let alertAction = UIAlertAction(title: "OK", style: .default) { [unowned self] _ in
-        dismiss(animated: true, completion: nil)
-      }
-      alertController.addAction(alertAction)
-      present(alertController, animated: true, completion: nil)
     }
     
     static func createCurrencyButton() -> UIButton {
@@ -301,7 +267,7 @@ private extension CurrencyConverterViewController {
         label.textAlignment = .right
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-
+        
         return label
     }
 }
