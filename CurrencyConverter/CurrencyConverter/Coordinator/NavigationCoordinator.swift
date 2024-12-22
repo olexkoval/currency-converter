@@ -58,7 +58,7 @@ extension NavigationCoordinatorImpl: NavigationCoordinator {
 
 extension NavigationCoordinatorImpl: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        if let dismissedPickerViewController = presentationController.presentedViewController as? CurrencyPickerViewController {
+        if let _ = presentationController.presentedViewController as? CurrencyPickerViewController {
             currencyPickerCompletion?(nil)
             currencyPickerCompletion = nil
         }

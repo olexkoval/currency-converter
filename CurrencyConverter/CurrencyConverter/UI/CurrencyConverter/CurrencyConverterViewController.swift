@@ -10,9 +10,11 @@ import Combine
 
 final class CurrencyConverterViewController: UIViewController {
     
-    private let viewModel: CurrencyConverterViewModel
     private var bindings = Set<AnyCancellable>()
     private var textFieldText = ""
+    private var viewModelData: CurrencyConverterViewModelData?
+    
+    private let viewModel: CurrencyConverterViewModel
     weak var navigationCoordinator: NavigationCoordinator?
     
     private lazy var containerView: UIView = {
@@ -218,6 +220,8 @@ private extension CurrencyConverterViewController {
     }
     
     func updateUI(viewModelData: CurrencyConverterViewModelData) {
+        self.viewModelData = viewModelData
+        
         sourceCurrencyButton.setTitle(viewModelData.sourceCurrency, for: .normal)
         targetCurrencyButton.setTitle(viewModelData.targetCurrency, for: .normal)
         sourceAmountLabel.text = viewModelData.sourceAmount
@@ -227,7 +231,7 @@ private extension CurrencyConverterViewController {
     @objc func sourceCurrencyButtonTapped() {
         textField.resignFirstResponder()
         
-        self.navigationCoordinator?.presentCurrencyPicker(for: nil) { [weak self] currencyISOCode in
+        self.navigationCoordinator?.presentCurrencyPicker(for: viewModelData?.sourceCurrency) { [weak self] currencyISOCode in
             if let currencyISOCode {
                 self?.viewModel.sourceCurrencyChanged(currencyISOCode)
             }
@@ -237,7 +241,7 @@ private extension CurrencyConverterViewController {
     @objc func targetCurrencyButtonTapped() {
         textField.resignFirstResponder()
         
-        self.navigationCoordinator?.presentCurrencyPicker(for: nil) { [weak self] currencyISOCode in
+        self.navigationCoordinator?.presentCurrencyPicker(for: viewModelData?.targetCurrency) { [weak self] currencyISOCode in
             if let currencyISOCode {
                 self?.viewModel.targetCurrencyChanged(currencyISOCode)
             }

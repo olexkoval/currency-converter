@@ -22,6 +22,7 @@ final class CurrencyPickerViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorInset = .zero
         
         view.addSubview(tableView)
         return tableView
@@ -130,9 +131,9 @@ extension CurrencyPickerViewController: UITableViewDataSource {
         
         if let selectedCurrencyISOCode,
            selectedCurrencyISOCode == cellTitle {
-            cell.setSelected(true, animated: false)
+            cell.imageView?.image = .checkmark
         } else {
-            cell.setSelected(false, animated: false)
+            cell.imageView?.image = nil
         }
         
         return cell
