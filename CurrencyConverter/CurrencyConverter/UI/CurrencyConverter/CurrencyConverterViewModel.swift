@@ -18,9 +18,11 @@ protocol CurrencyConverterViewModel: AnyObject {
     func sourceCurrencyChanged(_ sourceCurrencyISOCode: String)
     func targetCurrencyChanged(_ targetCurrencyISOCode: String)
     func amountChanged(_ amount: String)
-    func isValidAmount(_ amount: String) -> Bool
     
     func onAppear()
+    
+    func shouldChangeCharactersFrom(currentText: String, in range: NSRange, replacementString string: String) -> Bool
+    func validateAmountInput(amount: String) -> String
     
     var currencyConverterPublisher: Published<CurrencyConverterViewModelData>.Publisher { get }
     var loadingStatePublisher: Published<CurrencyConverterLoadingState>.Publisher { get }
@@ -129,12 +131,45 @@ extension CurrencyConverterViewModelImpl: CurrencyConverterViewModel {
         }
     }
     
-    func isValidAmount(_ amount: String) -> Bool {
-        nil != Double(amount)
-    }
-    
     var currencyConverterPublisher: Published<CurrencyConverterViewModelData>.Publisher { $currentData }
     var loadingStatePublisher: Published<CurrencyConverterLoadingState>.Publisher { $state }
+    
+    func shouldChangeCharactersFrom(currentText: String, in range: NSRange, replacementString string: String) -> Bool {
+        let allowedCharacters = "0123456789.,"
+        let characterSet = CharacterSet(charactersIn: allowedCharacters)
+        if string.rangeOfCharacter(from: characterSet.inverted) != nil {
+            return false
+        }
+
+        var updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+
+        updatedText = updatedText.replacingOccurrences(of: ",", with: ".")
+        
+        let components = updatedText.components(separatedBy: ".")
+        if components.count > 2 {
+            return false
+        }
+        
+        if updatedText.isEmpty {
+            return true
+        }
+
+        if let value = Double(updatedText),
+        let _ = try? Amount(value: value) {
+            return true
+        }
+
+        return false
+    }
+    
+    func validateAmountInput(amount: String) -> String {
+        if amount.isEmpty {
+            return "0"
+        }
+        else {
+            return amount.replacingOccurrences(of: ",", with: ".")
+        }
+    }
 }
 
 private extension CurrencyConverterViewModelImpl {

@@ -11,7 +11,6 @@ import Combine
 final class CurrencyConverterViewController: UIViewController {
     
     private var bindings = Set<AnyCancellable>()
-    private var textFieldText = ""
     private var viewModelData: CurrencyConverterViewModelData?
     
     private let viewModel: CurrencyConverterViewModel
@@ -115,8 +114,6 @@ final class CurrencyConverterViewController: UIViewController {
 extension CurrencyConverterViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.text = ""
-        textFieldText = ""
         return true
     }
     
@@ -124,28 +121,16 @@ extension CurrencyConverterViewController: UITextFieldDelegate {
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool
     {
-        var tft = textFieldText
-        
-        if string.isEmpty {
-            _ = tft.popLast()
-        }
-        else if string == "," {
-            tft.append(".")
-        }
-        else {
-            tft.append(string)
-        }
-        
-        if viewModel.isValidAmount(tft) {
-            textFieldText = tft
-            viewModel.amountChanged(textFieldText)
-        }
-        
-        return true
+        viewModel.shouldChangeCharactersFrom(currentText: textField.text ?? "",
+                                             in: range,
+                                             replacementString: string)
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        textField.text = textFieldText
+        let currentInput = textField.text ?? ""
+        let validInput = viewModel.validateAmountInput(amount: currentInput)
+        textField.text = validInput
+        viewModel.amountChanged(validInput)
     }
 }
 
