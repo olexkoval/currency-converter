@@ -11,7 +11,7 @@ import Combine
 enum CurrencyConverterLoadingState {
     case loading
     case finishedLoading
-    case error(Error)
+    case failure(Error)
 }
 
 protocol CurrencyConverterViewModel: AnyObject {
@@ -175,7 +175,7 @@ private extension CurrencyConverterViewModelImpl {
                 
                 switch completion {
                 case .failure(let modelError):
-                    self.state = .error(modelError)
+                    self.state = .failure(modelError)
                 case .finished:
                     self.state = .finishedLoading
                     self.scheduleTimerUpdate()

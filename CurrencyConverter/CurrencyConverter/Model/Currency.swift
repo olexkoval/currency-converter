@@ -7,6 +7,19 @@
 
 import Foundation
 
+enum CurrencyError: Error {
+    case invalidCurrencyISOCode
+}
+
+extension CurrencyError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidCurrencyISOCode:
+            return "Invalid Currency ISO Code was provided"
+        }
+    }
+}
+
 struct Currency: Hashable {
     
     static let supportedCurrencyISOCodes: [String] = [
@@ -25,10 +38,6 @@ struct Currency: Hashable {
     foundationCurrencyISOCodes : supportedCurrencyISOCodes
     
     private static let allCurrencyISOCodesSet = Set(allCurrencyISOCodes)
-    
-    enum CurrencyError: Error {
-        case invalidCurrencyISOCode
-    }
     
     static let usd: Currency = try! Currency(currencyISOCode: "USD")
     static let eur: Currency = try! Currency(currencyISOCode: "EUR")

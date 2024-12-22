@@ -12,11 +12,20 @@ protocol CurrencyConversionNetworkManager {
     func getCurrencyConversion(from request: CurrencyConversionRequest) -> AnyPublisher<CurrencyConversionResponse, Error>
 }
 
-struct CurrencyConversionNetworkManagerImpl {
-    enum NetworkingError: Error {
-        case invalidURL
+enum NetworkingError: Error {
+    case invalidURL
+}
+
+extension NetworkingError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "Failed to create currency conversion request. Please try again"
+        }
     }
-    
+}
+
+struct CurrencyConversionNetworkManagerImpl {
     private static func url(from request: CurrencyConversionRequest) -> URL? {
         URL(string: "http://api.evp.lt/currency/commercial/exchange/\(request.amount)-\(request.sourceCurrency)/\(request.targetCurrency)/latest")
     }

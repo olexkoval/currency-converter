@@ -12,7 +12,7 @@ final class CoreDataStack {
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "CurrencyConverter")
         container.loadPersistentStores { _, error in
-            if let error = error {
+            if let error {
                 assertionFailure("Failed to initialize CoreDataStack")
             }
         }

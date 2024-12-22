@@ -7,12 +7,21 @@
 
 import Foundation
 
+enum AmountError: Error {
+    case nonPositiveValueNotAllowed
+}
+
+extension AmountError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .nonPositiveValueNotAllowed:
+            return "Invalid amount value was provided"
+        }
+    }
+}
+
 struct Amount {    
     let value: Double
-    
-    enum AmountError: Error {
-        case nonPositiveValueNotAllowed
-    }
     
     static let zero: Amount = try! Amount(value: 0)
     

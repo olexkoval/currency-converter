@@ -208,7 +208,7 @@ private extension CurrencyConverterViewController {
                 self?.activityIndicator.startAnimating()
             case .finishedLoading:
                 self?.activityIndicator.stopAnimating()
-            case .error(let error):
+            case .failure(let error):
                 self?.activityIndicator.stopAnimating()
                 self?.navigationCoordinator?.showError(error)
             }
