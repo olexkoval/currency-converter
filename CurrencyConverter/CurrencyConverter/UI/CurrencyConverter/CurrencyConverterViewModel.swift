@@ -9,9 +9,9 @@ import Foundation
 import Combine
 
 enum CurrencyConverterLoadingState {
-  case loading
-  case finishedLoading
-  case error(Error)
+    case loading
+    case finishedLoading
+    case error(Error)
 }
 
 protocol CurrencyConverterViewModel: AnyObject {

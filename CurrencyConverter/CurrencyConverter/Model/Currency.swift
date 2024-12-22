@@ -22,7 +22,7 @@ struct Currency {
     
     static let usd: Currency = try! Currency(isoCurrencyCode: "USD")
     static let eur: Currency = try! Currency(isoCurrencyCode: "EUR")
-
+    
     let isoCurrencyCode: String
     
     init(isoCurrencyCode: String) throws {

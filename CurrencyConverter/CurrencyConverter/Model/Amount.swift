@@ -9,13 +9,13 @@ import Foundation
 
 struct Amount {    
     let value: Double
-        
+    
     enum AmountError: Error {
         case nonPositiveValueNotAllowed
     }
     
     static let zero: Amount = try! Amount(value: 0)
-        
+    
     init(value: Double) throws {
         guard value >= 0 else {
             throw AmountError.nonPositiveValueNotAllowed
