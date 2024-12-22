@@ -19,7 +19,7 @@ Follow these steps to set up and run the Currency Converter project:
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository_url>
+   git clone git@github.com:olexkoval/currency-converter.git
    cd <project_directory>
    ```
 
@@ -40,9 +40,9 @@ Follow these steps to set up and run the Currency Converter project:
 
 ## Known Issues
 - Occasionally, Xcode logs the following message during runtime while keyaboard appearance:
-  ```
+
 -[RTIInputSystemClient remoteTextInputSessionWithID:performInputOperation:]  perform input operation requires a valid sessionID. inputModality = Keyboard, inputOperation = <null selector>, customInfoType = UIEmojiSearchOperations
-  ```
+
   This issue does not affect the app's functionality and appears to be related to an internal Xcode or iOS framework behavior. A resolution is yet to be identified.
 
 ## Troubleshooting
