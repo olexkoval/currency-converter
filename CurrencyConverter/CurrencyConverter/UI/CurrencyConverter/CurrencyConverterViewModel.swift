@@ -35,6 +35,8 @@ final class CurrencyConverterViewModelImpl {
     
     private var bindings = Set<AnyCancellable>()
     
+    private var timer: Timer?
+    
     init(recentCurrenciesManager: RecentCurrenciesManager, 
          networkManager: CurrencyConversionNetworkManager)
     {
@@ -134,14 +136,29 @@ extension CurrencyConverterViewModelImpl: CurrencyConverterViewModel {
 }
 
 private extension CurrencyConverterViewModelImpl {
+    
+    func scheduleTimerUpdate() {
+        let timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
+            self?.update()
+        }
+        RunLoop.current.add(timer, forMode: .common)
+        self.timer = timer
+    }
+    
+    func resetTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
     func update() {
-        
-        bindings.removeAll()
         
         guard let cd = currentData as? CurrencyConverterViewModelDataImpl else {
             assertionFailure("Failed to cast currentData to CurrencyConverterViewModelDataImpl")
             return
         }
+        
+        resetTimer()
+        bindings.removeAll()
         
         state = .loading
         
@@ -159,6 +176,7 @@ private extension CurrencyConverterViewModelImpl {
                     self.state = .error(modelError)
                 case .finished:
                     self.state = .finishedLoading
+                    self.scheduleTimerUpdate()
                 }
                 
             } receiveValue: { [weak self] response in

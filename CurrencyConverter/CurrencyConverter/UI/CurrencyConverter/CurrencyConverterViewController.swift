@@ -227,21 +227,21 @@ private extension CurrencyConverterViewController {
     @objc func sourceCurrencyButtonTapped() {
         textField.resignFirstResponder()
         
-        self.navigationCoordinator?.presentCurrencyPicker(for: nil, completion: { [weak self] currencyISOCode in
+        self.navigationCoordinator?.presentCurrencyPicker(for: nil) { [weak self] currencyISOCode in
             if let currencyISOCode {
                 self?.viewModel.sourceCurrencyChanged(currencyISOCode)
             }
-        })
+        }
     }
     
     @objc func targetCurrencyButtonTapped() {
         textField.resignFirstResponder()
         
-        self.navigationCoordinator?.presentCurrencyPicker(for: nil, completion: { [weak self] currencyISOCode in
+        self.navigationCoordinator?.presentCurrencyPicker(for: nil) { [weak self] currencyISOCode in
             if let currencyISOCode {
                 self?.viewModel.targetCurrencyChanged(currencyISOCode)
             }
-        })
+        }
     }
     
     @objc func sourceAmountLabelTapped() {

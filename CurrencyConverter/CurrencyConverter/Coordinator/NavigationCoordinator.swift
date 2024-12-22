@@ -63,10 +63,8 @@ extension NavigationCoordinatorImpl: CurrencyPickerViewControllerDelegate {
         }
         
         self.currencyPickerCompletion = nil
-        
-        self.navigationController?.dismiss(animated: true, completion: {
-            currencyPickerCompletion(currencyISOCode)
-        })
+        currencyPickerCompletion(currencyISOCode)
+        self.navigationController?.dismiss(animated: true)
     }
     
     func currencyPickerViewControllerDidCancel(_ picker: CurrencyPickerViewController) {
@@ -76,10 +74,8 @@ extension NavigationCoordinatorImpl: CurrencyPickerViewControllerDelegate {
         }
         
         self.currencyPickerCompletion = nil
-        
-        self.navigationController?.dismiss(animated: true, completion: {
-            currencyPickerCompletion(nil)
-        })
+        currencyPickerCompletion(nil)
+        self.navigationController?.dismiss(animated: true)
     }
 }
 
