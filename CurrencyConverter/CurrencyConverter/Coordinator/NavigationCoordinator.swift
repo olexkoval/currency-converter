@@ -13,7 +13,7 @@ protocol NavigationCoordinator: AnyObject {
     func presentCurrencyPicker(for selectedCurrency: String?, completion: @escaping (String?) -> Void)
 }
 
-final class NavigationCoordinatorImpl {
+final class NavigationCoordinatorImpl: NSObject {
     private(set) weak var registry: DependencyRegistry?
     let rootViewController: UIViewController
     private var currencyPickerCompletion: ((String?) -> Void)?
@@ -50,8 +50,18 @@ extension NavigationCoordinatorImpl: NavigationCoordinator {
 
         currencyPicker.delegate = self
         currencyPicker.selectedCurrencyISOCode = selectedCurrency
+        currencyPicker.presentationController?.delegate = self
         
         self.navigationController?.present(currencyPicker, animated: true)
+    }
+}
+
+extension NavigationCoordinatorImpl: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        if let dismissedPickerViewController = presentationController.presentedViewController as? CurrencyPickerViewController {
+            currencyPickerCompletion?(nil)
+            currencyPickerCompletion = nil
+        }
     }
 }
 
