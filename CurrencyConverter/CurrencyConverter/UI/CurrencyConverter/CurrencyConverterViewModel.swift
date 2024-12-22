@@ -194,15 +194,23 @@ private extension CurrencyConverterViewModelImpl {
             return
         }
         
-        resetTimer()
-        bindings.removeAll()
-        
-        state = .loading
-        
         let request = CurrencyConversionRequest(sourceCurrency: cd.source,
                                                 targetCurrency: cd.target,
                                                 amount: cd.inputAmount)
         
+        if !request.isValid {
+            currentData = CurrencyConverterViewModelDataImpl(source: cd.source,
+                                                             inputAmount: .zero,
+                                                             target: cd.target,
+                                                             outputAmount: .zero)
+            return
+        }
+        
+        resetTimer()
+        bindings.removeAll()
+        
+        state = .loading
+ 
         networkManager.getCurrencyConversion(from: request)
             .receive(on: RunLoop.main)
             .sink { [weak self] completion in
@@ -211,11 +219,6 @@ private extension CurrencyConverterViewModelImpl {
                 switch completion {
                 case .failure(let modelError):
                     self.state = .failure(modelError)
-                    self.currentData = CurrencyConverterViewModelDataImpl(source: cd.source,
-                                                                          inputAmount: .zero,
-                                                                          target: cd.target,
-                                                                          outputAmount: .zero)
-                    
                 case .finished:
                     self.state = .finishedLoading
                     self.scheduleTimerUpdate()

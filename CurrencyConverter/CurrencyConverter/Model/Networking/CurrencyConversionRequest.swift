@@ -11,4 +11,8 @@ struct CurrencyConversionRequest {
     let sourceCurrency: Currency
     let targetCurrency: Currency
     let amount: Amount
+    
+    var isValid: Bool {
+        amount.value > 0
+    }
 }
