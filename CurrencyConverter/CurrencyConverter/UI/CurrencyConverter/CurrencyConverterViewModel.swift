@@ -36,6 +36,7 @@ final class CurrencyConverterViewModelImpl {
     private var bindings = Set<AnyCancellable>()
     
     private var timer: Timer?
+    private let amountInputDebouncer = Debouncer(delay: 0.3)
     
     init(recentCurrenciesManager: RecentCurrenciesManager, 
          networkManager: CurrencyConversionNetworkManager)
@@ -120,8 +121,9 @@ extension CurrencyConverterViewModelImpl: CurrencyConverterViewModel {
                                                              target: cd.target,
                                                              outputAmount: cd.outputAmount)
             
-            update()
-            
+            amountInputDebouncer.debounce { [weak self] in
+                self?.update()
+            }
         } catch {
             assertionFailure("Invalid amount input \(error)")
         }

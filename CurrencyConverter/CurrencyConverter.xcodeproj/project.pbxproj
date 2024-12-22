@@ -10,6 +10,7 @@
 		EB0987A72D182B4200057359 /* DependencyRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0987A52D182B4200057359 /* DependencyRegistry.swift */; };
 		EB0987AA2D182B5900057359 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = EB0987A92D182B5900057359 /* Swinject */; };
 		EB0987AD2D182D6F00057359 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0987AC2D182D6F00057359 /* NavigationCoordinator.swift */; };
+		EB0987B02D1865D600057359 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0987AF2D1865D600057359 /* Debouncer.swift */; };
 		EB1338082D163076006789E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1338072D163076006789E5 /* AppDelegate.swift */; };
 		EB13380A2D163076006789E5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1338092D163076006789E5 /* SceneDelegate.swift */; };
 		EB13380C2D163076006789E5 /* CurrencyConverterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB13380B2D163076006789E5 /* CurrencyConverterViewController.swift */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		EB0987A52D182B4200057359 /* DependencyRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyRegistry.swift; sourceTree = "<group>"; };
 		EB0987AC2D182D6F00057359 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
+		EB0987AF2D1865D600057359 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
 		EB1338042D163076006789E5 /* CurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB1338072D163076006789E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB1338092D163076006789E5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +116,14 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		EB0987AE2D1865C000057359 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				EB0987AF2D1865D600057359 /* Debouncer.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		EB1337FB2D163076006789E5 = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +147,7 @@
 		EB1338062D163076006789E5 /* CurrencyConverter */ = {
 			isa = PBXGroup;
 			children = (
+				EB0987AE2D1865C000057359 /* Utils */,
 				EB0987AB2D182D5900057359 /* Coordinator */,
 				EB0987A62D182B4200057359 /* DI */,
 				EB1338382D16D31F006789E5 /* App */,
@@ -375,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB13383C2D16D3ED006789E5 /* Currency.swift in Sources */,
+				EB0987B02D1865D600057359 /* Debouncer.swift in Sources */,
 				EB1338552D17565B006789E5 /* CurrencyConverterViewModelData.swift in Sources */,
 				EB13380C2D163076006789E5 /* CurrencyConverterViewController.swift in Sources */,
 				EB13383E2D16D6A6006789E5 /* CurrencyConversionRequest.swift in Sources */,
