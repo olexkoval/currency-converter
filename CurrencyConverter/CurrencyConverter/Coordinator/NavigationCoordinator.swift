@@ -28,7 +28,7 @@ extension NavigationCoordinatorImpl: NavigationCoordinator {
     func showError(_ error: Error) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: "OK", style: .default) { [unowned self] _ in
-            navigationController?.dismiss(animated: true, completion: nil)
+            self.navigationController?.dismiss(animated: true, completion: nil)
         }
         alertController.addAction(alertAction)
         navigationController?.present(alertController, animated: true, completion: nil)
