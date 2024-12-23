@@ -219,6 +219,10 @@ private extension CurrencyConverterViewModelImpl {
                 switch completion {
                 case .failure(let modelError):
                     self.state = .failure(modelError)
+                    self.currentData = CurrencyConverterViewModelDataImpl(source: cd.source,
+                                                                          inputAmount: .zero,
+                                                                          target: cd.target,
+                                                                          outputAmount: .zero)
                 case .finished:
                     self.state = .finishedLoading
                     self.scheduleTimerUpdate()

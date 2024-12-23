@@ -26,7 +26,7 @@ extension NetworkingError: LocalizedError {
 }
 
 struct CurrencyConversionNetworkManagerImpl {
-    private static func url(from request: CurrencyConversionRequest) -> URL? {
+    static func url(from request: CurrencyConversionRequest) -> URL? {
         URL(string: "http://api.evp.lt/currency/commercial/exchange/\(request.amount)-\(request.sourceCurrency)/\(request.targetCurrency)/latest")
     }
 }
