@@ -16,6 +16,8 @@ final class CurrencyConverterViewController: UIViewController {
     private let viewModel: CurrencyConverterViewModel
     weak var navigationCoordinator: NavigationCoordinator?
     
+    private var containerViewBottomConstraint: NSLayoutConstraint?
+    
     private lazy var containerView: UIView = {
         let container = UIView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -100,6 +102,13 @@ final class CurrencyConverterViewController: UIViewController {
         
         view.backgroundColor = .systemGray
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillChangeFrame(_:)),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+        
         setupBindings()
         setupConstraints()
     }
@@ -145,13 +154,20 @@ private extension CurrencyConverterViewController {
         let containerViewHeight = containerView.heightAnchor.constraint(equalToConstant: 200)
         containerViewHeight.priority = .defaultHigh
         
+        let containerViewBottomToCenter = containerView.bottomAnchor.constraint(equalTo: salg.centerYAnchor)
+        containerViewBottomToCenter.priority = .defaultHigh
+        
+        let containerViewBottomConstraint = containerView.bottomAnchor.constraint(lessThanOrEqualTo: salg.bottomAnchor)
+        self.containerViewBottomConstraint = containerViewBottomConstraint
+        
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(greaterThanOrEqualTo: salg.leadingAnchor, constant: 8),
             containerView.trailingAnchor.constraint(lessThanOrEqualTo: salg.trailingAnchor, constant: -8),
             containerView.centerXAnchor.constraint(equalTo: salg.centerXAnchor),
             containerViewWidth,
             containerViewHeight,
-            containerView.bottomAnchor.constraint(equalTo: salg.centerYAnchor),
+            containerViewBottomToCenter,
+            containerViewBottomConstraint,
             containerView.topAnchor.constraint(greaterThanOrEqualTo: salg.topAnchor, constant: 8),
             
             sourceCurrencyButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
@@ -236,6 +252,21 @@ private extension CurrencyConverterViewController {
     
     @objc func sourceAmountLabelTapped() {
         textField.becomeFirstResponder()
+    }
+    
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard textField.isFirstResponder else { return }
+        
+        guard let userInfo = notification.userInfo else { return }
+        
+        if let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            let keyboardHeight = UIScreen.main.bounds.height - keyboardFrame.origin.y
+            
+            UIView.animate(withDuration: 0.2) {
+                self.containerViewBottomConstraint?.constant = -keyboardHeight
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     static func createCurrencyButton() -> UIButton {
