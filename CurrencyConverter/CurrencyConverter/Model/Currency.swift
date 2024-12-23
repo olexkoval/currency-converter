@@ -23,8 +23,11 @@ extension CurrencyError: LocalizedError {
 struct Currency: Hashable {
     
     static let supportedCurrencyISOCodes: [String] = [
-//        Please specify here the list of supported Currency ISO Codes otherwise
-//        Foundation Currency ISO Codes will be used
+//        Please specify here the list of supported Currency ISO Codes
+//        otherwise Foundation Currency ISO Codes will be used
+//        Please do not forget to reinstall the application after changing this list as CoreData can work incorrecly
+//
+//        "Usd", "eur",...
     ]
     
     static let foundationCurrencyISOCodes =

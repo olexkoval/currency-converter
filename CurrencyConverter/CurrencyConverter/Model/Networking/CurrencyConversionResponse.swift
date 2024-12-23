@@ -12,8 +12,9 @@ struct CurrencyConversionNetworkResponse: Decodable {
     let currency: String
 }
 
-enum CurrencyConversionNetworkError: Error {
+enum CurrencyConversionNetworkError: Error, Equatable {
     case serverResponseError(String)
+    case invalidServerResponse(String)
 }
 
 extension CurrencyConversionNetworkError: LocalizedError {
@@ -21,6 +22,8 @@ extension CurrencyConversionNetworkError: LocalizedError {
         switch self {
         case .serverResponseError(let errorInfo):
             return "Server Error\n\(errorInfo)"
+        case .invalidServerResponse(let error):
+            return "Server response is invalid\n\(error)"
         }
     }
 }
@@ -53,10 +56,15 @@ struct CurrencyConversionResponse {
     let currency: Currency
     
     init(networkResponse: CurrencyConversionNetworkResponse) throws {
-        guard let amountValue = Double(networkResponse.amount) else {
-            throw AmountError.nonPositiveValueNotAllowed
+        do {
+            guard let amountValue = Double(networkResponse.amount) else {
+                throw AmountError.nonPositiveValueNotAllowed
+            }
+            self.amount = try Amount(value: amountValue)
+            self.currency = try Currency(currencyISOCode: networkResponse.currency)
         }
-        self.amount = try Amount(value: amountValue)
-        self.currency = try Currency(currencyISOCode: networkResponse.currency)
+        catch {
+            throw CurrencyConversionNetworkError.invalidServerResponse(error.localizedDescription)
+        }
     }
 }

@@ -69,7 +69,7 @@ class NetworkingTests: XCTestCase {
         let networkResponse = CurrencyConversionNetworkResponse(amount: "invalid", currency: "EUR")
 
         XCTAssertThrowsError(try CurrencyConversionResponse(networkResponse: networkResponse)) { error in
-            XCTAssertEqual(error as? AmountError, AmountError.nonPositiveValueNotAllowed, "Expected AmountError.nonPositiveValueNotAllowed for invalid amount value.")
+            XCTAssertEqual(error as? CurrencyConversionNetworkError, CurrencyConversionNetworkError.invalidServerResponse(AmountError.nonPositiveValueNotAllowed.localizedDescription), "Expected AmountError.nonPositiveValueNotAllowed for invalid amount value.")
         }
     }
 
@@ -80,7 +80,6 @@ class NetworkingTests: XCTestCase {
     }
 
     func testCurrencyConversionNetworkManagerInvalidURL() {
-        let manager = CurrencyConversionNetworkManagerImpl()
         let sourceCurrency = try! Currency(currencyISOCode: "USD")
         let targetCurrency = try! Currency(currencyISOCode: "EUR")
         let request = CurrencyConversionRequest(sourceCurrency: sourceCurrency, targetCurrency: targetCurrency, amount: try! Amount(value: 100))

@@ -50,7 +50,6 @@ class CurrencyTests: XCTestCase {
     }
 
     func testSupportedCurrencyISOCodes() {
-        let supportedCodes = Currency.supportedCurrencyISOCodes
         let allCodes = Currency.allCurrencyISOCodes
 
         XCTAssertTrue(allCodes.contains("USD"), "USD should be part of the supported or foundation ISO codes.")
